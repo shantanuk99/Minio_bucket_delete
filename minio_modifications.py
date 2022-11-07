@@ -79,32 +79,16 @@ class MinioBucket:
         subprocess.call(shlex.split("timedatectl set-ntp false")) 
         subprocess.call(shlex.split("sudo date -s '%s'" % next_date))
         subprocess.call(shlex.split("sudo hwclock -w"))
-        
-        # st_time = time.time()
-        # while True:
-        #     time.sleep(60*5)
-        #     obj_count = self.count_obj(bucket_name)
-        #     print(obj_count)
-        #     if obj_count <= 0:
-        #         try:
-        #             self.minioClient.remove_bucket(bucket_name)
-        #             print("Bucket Deleted successfully")
-        #         except:
-        #             print("Bucket is empty but can't be deleted")
-        #         break
-        # print(f'Total time {time.time() - st_time} seconds')
+
                 
 mc = MinioBucket()
 
-# date_now = str(datetime.utcnow() + timedelta(seconds=1))
-# formatted_date = f'{date_now[0]}T{date_now[1]}Z'
 
 mc.drop_bucket('bucket0')
-# result = mc.minioClient.get_bucket_lifecycle('bucket0')
 
 
 def upload_image(bucket_name,min_client,count):
-        for j in range(783_999,count): 
+        for j in range(count): 
             print(j)
             min_client.fput_object(bucket_name, f'image{j}.jpg', 'sample.jpg')
             if j % 1000 == 0 and j != 0:
@@ -114,9 +98,8 @@ def upload_image(bucket_name,min_client,count):
 def make_buckets(min_client):
     for i in range(1):
         try:
-            # min_client.make_bucket(f'bucket{i}')
-            print('yes')
-            upload_image(f'bucket{i}',min_client, 1_000_000)
+            min_client.make_bucket(f'bucket{i}')
+            upload_image(f'bucket{i}',min_client, 1_000)
         except:
             pass
 
