@@ -2,12 +2,15 @@
 import logging
 logging.basicConfig(filename=r'/home/kumarshantanu/Desktop/cron_logs.log', format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
                     datefmt="%F %A %T",  level=logging.INFO)
+logging.info('Cronjob started')
 
 def main():
-    logging.info('Cronjob started')
+    # logging.info('Cronjob started')
     
-
-    from minio import Minio
+    try:
+        from minio import Minio
+    except:
+        logging.warning('Cannot find Minio')
     try:
         mc = Minio('localhost:9000',
                         'ROOTNAME',
@@ -17,7 +20,7 @@ def main():
         logging.warning('Unable to instantiate Minio client')
         
 
-    bucket_name = 'bucket0'
+    bucket_name = 'bucketx'
     try:
         
         logging.info(f'Bucket : {bucket_name} Trying to delete the bucket')
